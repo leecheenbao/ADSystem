@@ -45,3 +45,5 @@ node_modules
 
 # 文件
 docs/assets/main*
+
+.env
