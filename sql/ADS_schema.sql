@@ -1,3 +1,36 @@
+-- 員工管理
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '員工 ID',
+    name VARCHAR(255) NOT NULL COMMENT '員工姓名',
+    position VARCHAR(255) COMMENT '職位',
+    department VARCHAR(255) COMMENT '部門',
+    file_id INT COMMENT '檔案 ID',
+    status ENUM('active', 'inactive') DEFAULT 'active' COMMENT '員工狀態',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間'
+);
+
+-- 設備
+CREATE TABLE equipment (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '設備 ID',
+    name VARCHAR(255) NOT NULL COMMENT '設備名稱',
+    description TEXT COMMENT '設備描述',
+    file_id INT COMMENT '檔案 ID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
+    FOREIGN KEY (file_id) REFERENCES files(id)
+);
+
+-- 檔案上傳
+CREATE TABLE files (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '檔案 ID',
+    filename VARCHAR(255) NOT NULL COMMENT '檔案名稱',
+    original_filename VARCHAR(255) NOT NULL COMMENT '原始檔案名稱',
+    mime_type VARCHAR(255) NOT NULL COMMENT '檔案類型',
+    size INT COMMENT '檔案大小',
+    uploaded_by INT COMMENT '上傳者的用戶 ID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
+    FOREIGN KEY (uploaded_by) REFERENCES users(id)
+);
+
 -- 表單
 CREATE TABLE forms (
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '表單 ID',
@@ -46,15 +79,7 @@ CREATE TABLE equipment_forms (
     FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );
 
--- 設備
-CREATE TABLE equipment (
-    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '設備 ID',
-    name VARCHAR(255) NOT NULL COMMENT '設備名稱',
-    description TEXT COMMENT '設備描述',
-    file_id INT COMMENT '檔案 ID',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
-    FOREIGN KEY (file_id) REFERENCES files(id)
-);
+
 
 -- 其他連結
 CREATE TABLE links (
@@ -112,17 +137,7 @@ CREATE TABLE reward_redemptions (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- 員工管理
-CREATE TABLE employees (
-    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '員工 ID',
-    name VARCHAR(255) NOT NULL COMMENT '員工姓名',
-    position VARCHAR(255) COMMENT '職位',
-    department VARCHAR(255) COMMENT '部門',
-    file_id INT COMMENT '檔案 ID',
-    status ENUM('active', 'inactive') DEFAULT 'active' COMMENT '員工狀態',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
-    FOREIGN KEY (file_id) REFERENCES files(id)
-);
+
 
 -- 公告管理
 CREATE TABLE announcements (
@@ -145,16 +160,4 @@ CREATE TABLE statistics (
     quarter INT COMMENT '季度',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- 檔案上傳
-CREATE TABLE files (
-    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '檔案 ID',
-    filename VARCHAR(255) NOT NULL COMMENT '檔案名稱',
-    original_filename VARCHAR(255) NOT NULL COMMENT '原始檔案名稱',
-    mime_type VARCHAR(255) NOT NULL COMMENT '檔案類型',
-    size INT COMMENT '檔案大小',
-    uploaded_by INT COMMENT '上傳者的用戶 ID',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '創建時間',
-    FOREIGN KEY (uploaded_by) REFERENCES users(id)
 );
